@@ -1,5 +1,8 @@
 package com.niit.grocessory.controller;
 
+import java.security.Principal;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,9 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.niit.groccessory.dao.CategoryDao;
 import com.niit.groccessory.dao.CustomerDao;
+import com.niit.groccessory.model.Category;
 import com.niit.groccessory.model.Customer;
 
 @Controller
@@ -18,12 +24,25 @@ public class HomeController {
 
 	@Autowired
 	CustomerDao customerDao;
+	CategoryDao categoryDao;
 	
-	@RequestMapping("/")
-	public ModelAndView Home() {
+	@RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
+	public ModelAndView Home(Model mm , Principal p)
+	{
 
-		ModelAndView m = new ModelAndView("index");
-		return m;
+		if(p!=null)
+		{
+			Customer customer = customerDao.getUserDetails(p.getName());
+			if(!customer.getRole().equals("ROLE_ADMIN"))
+			{
+				return new ModelAndView("userpage");
+			}
+			else {
+				return new ModelAndView("Adminpage");		
+			}
+		}
+		return new ModelAndView("index");
+		
 
 	}
 
@@ -59,5 +78,14 @@ public class HomeController {
 				return "redirect:/";
 			}
 		}
+	}
+	
+	@RequestMapping("/login")
+	public String loginpage(Model m)
+	{
+	//	List<Category> listcategories = categoryDao.retreiveAllCategories();
+		//m.addAttribute("catlist", listcategories);
+		
+		return "login";
 	}
 }

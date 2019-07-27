@@ -28,7 +28,7 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>5.1.5.RELEASE</version>
+			<version>5.1.3.RELEASE</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
@@ -43,27 +43,38 @@
 			<artifactId>grocessoryshop</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs -->
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+			<version>5.1.3.RELEASE</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>5.1.3.RELEASE</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-taglibs -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-taglibs</artifactId>
-			<version>5.1.5.RELEASE</version>
+			<version>5.1.3.RELEASE</version>
 		</dependency>
- 
-		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-web -->
+
+<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
 <dependency>
-    <groupId>org.springframework.security</groupId>
-    <artifactId>spring-security-web</artifactId>
-    <version>5.1.5.RELEASE</version>
+    <groupId>javax.servlet</groupId>
+    <artifactId>javax.servlet-api</artifactId>
+    <version>4.0.1</version>
+   <!--  <scope>provided</scope> -->
 </dependency>
-		
-		<!-- https://mvnrepository.com/artifact/org.springframework.security/spring-security-config -->
-<dependency>
-    <groupId>org.springframework.security</groupId>
-    <artifactId>spring-security-config</artifactId>
-    <version>5.1.5.RELEASE</version>
-</dependency>
-		
+
+
+
 
 	</dependencies>
 	<build>

@@ -112,6 +112,8 @@ public class AdminController
 		
 		productDao.addProduct(product);
 		String path = request.getServletContext().getRealPath("/resources/");
+		
+		System.out.println(path);
 
 		String totalFilewithPath = path + String.valueOf(product.getProductId()) + ".jpg";
 
@@ -155,9 +157,64 @@ public class AdminController
 			m.addAttribute("catlist", listcategories);
 
 			return "redirect:/admin/productp";
-
-
-		
+	
 		
 	}
+	
+	@RequestMapping("/productp")
+	public ModelAndView product(Model m) {
+		Product product = new Product();
+		m.addAttribute(product);
+		List<Product> listproducts = productDao.retreiveAllProducts();
+		m.addAttribute("prodlist", listproducts);
+		List<Category> listcategories = categoryDao.retreiveAllCategories();
+
+		m.addAttribute("catlist", listcategories);
+
+		return new ModelAndView("product");
+	}
+
+	@RequestMapping(value = "updateProduct/{productId}")
+	public ModelAndView editProduct(@PathVariable("productId") int productId, Model m) {
+
+		Product product = productDao.getProduct(productId);
+
+		m.addAttribute(product);
+
+		List<Category> listcategories = categoryDao.retreiveAllCategories();
+
+		m.addAttribute("catlist", listcategories);
+
+		List<Product> listProducts = productDao.retreiveAllProducts();
+
+		m.addAttribute("prodlist", listProducts);
+
+		return new ModelAndView ("product");
+
+	}
+	@RequestMapping(value = "deleteProduct/{productId}")
+	public String deleteProduct(@PathVariable("productId") int productId, Model m) {
+
+		Product p = productDao.getProduct(productId);
+
+		productDao.deleteProduct(p);
+
+		Product product = new Product();
+
+		m.addAttribute("product", product);
+
+		List<Category> listcategories = categoryDao.retreiveAllCategories();
+
+		m.addAttribute("catlist", listcategories);
+
+		List<Product> listProducts = productDao.retreiveAllProducts();
+
+		m.addAttribute("prodlist", listProducts);
+
+		return "redirect:/admin/productp";
+
+	}
+
+
+	
 }

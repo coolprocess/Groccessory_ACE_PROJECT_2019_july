@@ -59,13 +59,13 @@
 	
 							<div class="dropdown">
 	
-								<form:select path="category.catId" class="form-control"
+								<form:select path="category.cid" class="form-control"
 									required="true">
 	
 									<form:option value="0" label="---Select Category---" />
 	
-									<form:options items="${catlist}" itemValue="catId"
-										itemLabel="catName" />
+									<form:options items="${catlist}" itemValue="cid"
+										itemLabel="cname" />
 	
 								</form:select>
 	

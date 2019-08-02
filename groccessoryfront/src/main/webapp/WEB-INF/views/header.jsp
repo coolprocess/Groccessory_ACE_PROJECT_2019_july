@@ -30,13 +30,31 @@
 			<ul class="nav navbar-nav">
 				<li class="active"><a href="${contextPath}">Home</a></li>
 				<security:authorize access="hasAuthority('ROLE_ADMIN')">
-				<li><a href="${contextPath}/admin/category">Category Operations</a></li>
-				<li><a href="${contextPath}/admin/productp">Product Operations</a></li>
+					<li><a href="${contextPath}/admin/category">Category
+							Operations</a></li>
+					<li><a href="${contextPath}/admin/productp">Product
+							Operations</a></li>
 				</security:authorize>
 
-
-				
 			</ul>
+			<security:authorize access="!hasAuthority('ROLE_ADMIN')">
+
+				<li><a href="${contextPath}/products">Products</a></li>
+
+				<li><a href="${contextPath}/category" class="dropdown-toggle"
+					data-toggle="dropdown">Categories<b class="caret"></b></a>
+
+					<ul class="dropdown-menu">
+						<c:forEach items="${catlist}" var="cat">
+							<li><a href="${contextPath}/CategorizedProducts/${cat.cid}">${cat.cname}</a></li>
+
+						</c:forEach>
+
+					</ul></li>
+
+			</security:authorize>
+
+
 			<ul class="nav navbar-nav navbar-right">
 				<security:authorize access="isAnonymous()">
 					<li><a href="${contextPath}/reg"><span

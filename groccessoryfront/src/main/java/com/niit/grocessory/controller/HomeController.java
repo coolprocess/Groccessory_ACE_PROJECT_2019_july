@@ -1,6 +1,7 @@
 package com.niit.grocessory.controller;
 
 import java.security.Principal;
+import java.util.Collection;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -15,9 +16,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.niit.groccessory.dao.CartDao;
 import com.niit.groccessory.dao.CategoryDao;
 import com.niit.groccessory.dao.CustomerDao;
 import com.niit.groccessory.dao.ProductDao;
+import com.niit.groccessory.model.Cart;
 import com.niit.groccessory.model.Category;
 import com.niit.groccessory.model.Customer;
 import com.niit.groccessory.model.Product;
@@ -31,7 +34,8 @@ public class HomeController {
 	CategoryDao categoryDao;
 	@Autowired
 	ProductDao productDao;
-	
+	@Autowired
+	CartDao cartDao;
 	
 	@RequestMapping(value = { "/", "/home" }, method = RequestMethod.GET)
 	public ModelAndView Home(Model mm , Principal p)
@@ -42,6 +46,9 @@ public class HomeController {
 			Customer customer = customerDao.getUserDetails(p.getName());
 			if(!customer.getRole().equals("ROLE_ADMIN"))
 			{
+				Cart cart = customer.getCart();
+				mm.addAttribute("cart",cart);
+				mm.addAttribute("customer",customer);
 				return new ModelAndView("userpage");
 			}
 			else {
@@ -81,7 +88,14 @@ public class HomeController {
 					}
 			else
 			{
+				Cart cart = new Cart();
+				customer.setCart(cart);
+				cart.setCustomer(customer);
+				
 				customerDao.addCustomer(customer);
+				cartDao.addCart(cart);
+				List<Category> listcategories = categoryDao.retreiveAllCategories();
+				m.addAttribute("catlist", listcategories);
 				return "redirect:/";
 			}
 		}
@@ -106,7 +120,8 @@ public class HomeController {
 		if(p!=null)
 		{
 			Customer customer = customerDao.getUserDetails(p.getName());
-
+			Cart cart = customer.getCart();
+			m.addAttribute("cart",cart);
 			m.addAttribute(customer);
 		}
 		
@@ -125,8 +140,8 @@ public class HomeController {
 public ModelAndView prodDisplay(@PathVariable("productId") int productId, Model m, Principal principal) {
 	if (principal != null) {
 		Customer customer = customerDao.getUserDetails(principal.getName());
-		
-		
+		Cart cart = customer.getCart();
+		m.addAttribute("cart",cart);
 		m.addAttribute(customer);
 	}
 
@@ -138,5 +153,24 @@ public ModelAndView prodDisplay(@PathVariable("productId") int productId, Model 
 	return new ModelAndView("productDisplay");
 }
 
+	@RequestMapping(value="/CategorizedProducts/{cid}", method = RequestMethod.GET)
+	public ModelAndView catproducts(@PathVariable("cid") int cid, Model m, Principal principal)
+	{
+		if(principal!=null)
+		{
+			Customer customer = customerDao.getUserDetails(principal.getName());
+			m.addAttribute(customer);
+			Cart cart = customer.getCart();
+			m.addAttribute("cart",cart);
+			m.addAttribute(customer);
+		}
+		List<Category> listcat = categoryDao.retreiveAllCategories();
+		m.addAttribute("catlist",listcat);
+		
+		Category category = categoryDao.getCategory(cid);
+		Collection<Product> products = category.getProducts();
+		m.addAttribute("catproductlist",products);
+		return new ModelAndView("CategorizedProducts");
+	}
 
 }

@@ -33,6 +33,17 @@ public class Product implements Serializable {
 
 	@Transient
 	private MultipartFile pimage;
+	
+	@OneToOne(mappedBy = "product")
+	private CartItems cartItems;
+
+	public CartItems getCartItems() {
+		return cartItems;
+	}
+
+	public void setCartItems(CartItems cartItems) {
+		this.cartItems = cartItems;
+	}
 
 	public int getProductId() {
 		return productId;

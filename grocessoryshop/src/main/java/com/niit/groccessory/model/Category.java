@@ -26,6 +26,14 @@ public class Category {
     private Collection<Product> products= new ArrayList<Product>();
 
 	
+	public Collection<Product> getProducts() {
+		return products;
+	}
+
+	public void setProducts(Collection<Product> products) {
+		this.products = products;
+	}
+
 	public int getCid() {
 		return cid;
 	}
